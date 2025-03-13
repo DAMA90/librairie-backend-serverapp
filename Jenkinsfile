@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        GIT_REPO = "https://github.com/Dama90/libraire-backend-app"
-        GIT_BRANCH = "version-2"
+        GIT_REPO = "https://github.com/DAMA90/librairie-backend-serverapp"
+        GIT_BRANCH = "main"
         DEPLOY_DIR = "web010"
     }
 
