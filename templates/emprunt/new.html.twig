@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel Emprunt - Baticam{% endblock %}
+
+{% block body %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('emprunts_index') }}">Emprunts</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Nouvel emprunt</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h2 class="mb-0">📝 Créer un nouvel emprunt</h2>
+            </div>
+            <div class="card-body">
+                {{ form_start(form) }}
+                    <div class="mb-3">
+                        {{ form_label(form.livre) }}
+                        {{ form_widget(form.livre, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.livre) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.utilisateur) }}
+                        {{ form_widget(form.utilisateur, {'attr': {'class': 'form-select'}}) }}
+                        {{ form_errors(form.utilisateur) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.dateEmprunt) }}
+                        {{ form_widget(form.dateEmprunt, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.dateEmprunt) }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form_label(form.dateRetourPrevue) }}
+                        {{ form_widget(form.dateRetourPrevue, {'attr': {'class': 'form-control'}}) }}
+                        <small class="form-text text-muted">
+                            Par défaut, les livres sont empruntés pour 14 jours.
+                        </small>
+                        {{ form_errors(form.dateRetourPrevue) }}
+                    </div>
+                    
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ path('emprunts_index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-save"></i> Enregistrer l'emprunt
+                        </button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

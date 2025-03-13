@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation du mot de passe{% endblock %}
+
+{% block body %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow p-4 mt-5">
+            <h2 class="text-center">Réinitialisation du mot de passe</h2>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success">{{ message }}</div>
+            {% endfor %}
+
+            {% for message in app.flashes('danger') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            <form method="post">
+                {{ form_start(requestForm) }}
+                <div class="mb-3">
+                    <label class="form-label">Entrez votre email :</label>
+                    {{ form_widget(requestForm.email, {'attr': {'class': 'form-control'}}) }}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Envoyer</button>
+                {{ form_end(requestForm) }}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

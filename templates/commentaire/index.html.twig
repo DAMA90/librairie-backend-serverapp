@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Commentaires - Baticam{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">📝 Gestion des commentaires</h1>
+
+<div class="card">
+    <div class="card-body">
+        {% if commentaires is empty %}
+            <div class="alert alert-info">
+                Aucun commentaire n'a encore été publié sur le site.
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Utilisateur</th>
+                            <th>Livre</th>
+                            <th>Date</th>
+                            <th>Commentaire</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for commentaire in commentaires %}
+                            <tr>
+                                <td>{{ commentaire.id }}</td>
+                                <td>{{ commentaire.utilisateur.nom }}</td>
+                                <td>
+                                    <a href="{{ path('livre_show', {'id': commentaire.livre.id}) }}">
+                                        {{ commentaire.livre.titre }}
+                                    </a>
+                                </td>
+                                <td>{{ commentaire.date|date('d/m/Y H:i') }}</td>
+                                <td>
+                                    {% if commentaire.description|length > 50 %}
+                                        {{ commentaire.description|slice(0, 50) }}...
+                                    {% else %}
+                                        {{ commentaire.description }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="{{ path('commentaire_livre', {'id': commentaire.livre.id}) }}" class="btn btn-info btn-sm">
+                                            <i class="fas fa-eye"></i> Voir tous
+                                        </a>
+                                        <form action="{{ path('commentaire_delete', {'id': commentaire.id}) }}" method="post" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');">
+                                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ commentaire.id) }}">
+                                            <button type="submit" class="btn btn-danger btn-sm">
+                                                <i class="fas fa-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

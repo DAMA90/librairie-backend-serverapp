@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue de livres - Baticam{% endblock %}
+
+{% block body %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>📚 Catalogue de la bibliothèque</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('livre_new') }}" class="btn btn-success">
+                <i class="fas fa-plus-circle"></i> Ajouter un livre
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{# Barre de recherche #}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" action="{{ path('livres_index') }}" class="row g-3">
+                    <div class="col-md-8">
+                        <input type="text" name="recherche" class="form-control" placeholder="Rechercher un titre ou une description..." value="{{ app.request.query.get('recherche') }}">
+                    </div>
+                   <div class="col-md-3">
+    <select name="categorie" class="form-select">
+        <option value="">Toutes les catégories</option>
+        {% for categorie in categories %}
+            <option value="{{ categorie.id }}" {% if app.request.query.get('categorie') == categorie.id %}selected{% endif %}>
+                {{ categorie.description }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary w-100">🔍</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if livres is empty %}
+    <div class="alert alert-info">
+        Aucun livre trouvé.
+    </div>
+{% else %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for livre in livres %}
+            <div class="col">
+                <div class="card h-100">
+                    {% if livre.image %}
+                        <div class="text-center p-3">
+                            <img src="{{ asset('uploads/images/' ~ livre.image) }}" class="card-img-top" alt="{{ livre.titre }}" style="max-height: 200px; width: auto; max-width: 100%; object-fit: contain;">
+                        </div>
+                    {% else %}
+                        <div class="text-center p-3 bg-light">
+                            <div style="height: 150px; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-book fa-5x text-secondary"></i>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ livre.titre }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ livre.categorie.description }}</h6>
+                        <p class="card-text">{{ livre.description|slice(0, 100) }}{% if livre.description|length > 100 %}...{% endif %}</p>
+                    </div>
+                    <div class="card-footer bg-transparent d-flex justify-content-between">
+                        <small class="text-muted">Ajouté le {{ livre.date|date('d/m/Y') }}</small>
+                        <a href="{{ path('livre_show', {'id': livre.id}) }}" class="btn btn-sm btn-primary">Voir plus</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endblock %}

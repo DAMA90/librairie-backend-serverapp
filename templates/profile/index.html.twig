@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - Baticam{% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <h1 class="mb-4">👤 Mon Profil</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="profile-card">
+            <h3>Informations personnelles</h3>
+            <hr>
+            <p><strong>Nom:</strong> {{ app.user.nom }}</p>
+            <p><strong>Email:</strong> {{ app.user.email }}</p>
+            <p>
+                <strong>Rôle:</strong> 
+                {% if 'ROLE_ADMIN' in app.user.roles %}
+                    <span class="badge bg-danger">Administrateur</span>
+                {% elseif 'ROLE_BIBLIOTHECAIRE' in app.user.roles %}
+                    <span class="badge bg-warning">Bibliothécaire</span>
+                {% else %}
+                    <span class="badge bg-primary">Utilisateur</span>
+                {% endif %}
+            </p>
+            <div class="d-grid gap-2 mt-4">
+                <a href="{{ path('profile_edit') }}" class="btn btn-primary">✏️ Modifier mon profil</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="profile-card">
+            <h3>Mes emprunts en cours</h3>
+            <hr>
+            
+            {% if emprunts_actifs is empty %}
+                <div class="alert alert-info">
+                    Vous n'avez pas d'emprunts en cours.
+                </div>
+            {% else %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>📚 Livre</th>
+                                <th>📅 Emprunté le</th>
+                                <th>⏳ À rendre le</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for emprunt in emprunts_actifs %}
+                                <tr class="{{ emprunt.dateRetourPrevue < date() ? 'table-danger' : '' }}">
+                                    <td>{{ emprunt.livre.titre }}</td>
+                                    <td>{{ emprunt.dateEmprunt|date('d/m/Y') }}</td>
+                                    <td>{{ emprunt.dateRetourPrevue|date('d/m/Y') }}</td>
+                                    <td>
+                                        {% if emprunt.dateRetourPrevue < date() %}
+                                            <span class="badge bg-danger">En retard</span>
+                                        {% else %}
+                                            <span class="badge bg-success">En cours</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+            
+            <div class="d-grid gap-2 mt-3">
+                <a href="{{ path('profile_emprunts') }}" class="btn btn-outline-primary">Voir tous mes emprunts</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

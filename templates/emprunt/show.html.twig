@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'Emprunt - Baticam{% endblock %}
+
+{% block body %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ path('emprunts_index') }}">Emprunts</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Détails de l'emprunt #{{ emprunt.id }}</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h2 class="mb-0">📚 Détails de l'Emprunt #{{ emprunt.id }}</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Livre:</div>
+                    <div class="col-md-8">
+                        <a href="{{ path('livre_show', {'id': emprunt.reservation.livre.id}) }}">{{ emprunt.reservation.livre.titre }}</a>
+                        <span class="badge bg-secondary ms-2">{{ emprunt.reservation.livre.categorie.description }}</span>
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Utilisateur:</div>
+                    <div class="col-md-8">{{ emprunt.reservation.utilisateur.nom }} ({{ emprunt.reservation.utilisateur.email }})</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Date d'emprunt:</div>
+                    <div class="col-md-8">{{ emprunt.dateEmprunt|date('d/m/Y H:i') }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Date de retour prévue:</div>
+                    <div class="col-md-8">{{ emprunt.dateRetourPrevue|date('d/m/Y') }}</div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Date de retour réelle:</div>
+                    <div class="col-md-8">
+                        {% if emprunt.dateRetourReelle %}
+                            {{ emprunt.dateRetourReelle|date('d/m/Y H:i') }}
+                            {% if emprunt.dateRetourReelle > emprunt.dateRetourPrevue %}
+                                <span class="badge bg-warning">Retard de {{ emprunt.dateRetourReelle.diff(emprunt.dateRetourPrevue).days }} jours</span>
+                            {% else %}
+                                <span class="badge bg-success">À temps</span>
+                            {% endif %}
+                        {% else %}
+                            <span class="badge bg-secondary">Non retourné</span>
+                            {% if emprunt.dateRetourPrevue < date() %}
+                                <span class="badge bg-danger">En retard de {{ date().diff(emprunt.dateRetourPrevue).days }} jours</span>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-4 fw-bold">Statut:</div>
+                    <div class="col-md-8">
+                        {% if emprunt.dateRetourReelle %}
+                            <span class="badge bg-info">Terminé</span>
+                        {% elseif emprunt.dateRetourPrevue < date() %}
+                            <span class="badge bg-danger">En retard</span>
+                        {% else %}
+                            <span class="badge bg-success">En cours</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light d-flex justify-content-between">
+                <div>
+                    <a href="{{ path('emprunts_index') }}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Retour à la liste
+                    </a>
+                </div>
+                <div>
+                    {% if not emprunt.dateRetourReelle %}
+                        <form action="{{ path('emprunt_retour', {'id': emprunt.id, 'admin': true}) }}" method="post" class="d-inline me-2">
+                            <input type="hidden" name="_token" value="{{ csrf_token('retour' ~ emprunt.id) }}">
+                            <button type="submit" class="btn btn-primary" onclick="return confirm('Confirmer le retour du livre ?')">
+                                <i class="fas fa-check"></i> Marquer comme retourné
+                            </button>
+                        </form>
+                    {% endif %}
+                   
+                    <form action="{{ path('emprunt_delete', {'id': emprunt.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet emprunt ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ emprunt.id) }}">
+                        <button class="btn btn-danger"><i class="fas fa-trash"></i> Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

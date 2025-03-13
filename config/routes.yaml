@@ -1,0 +1,175 @@
+home:
+    path: /
+    controller: App\Controller\HomeController::index
+
+# Routes d'authentification
+app_register_page:
+    path: /register
+    controller: App\Controller\RegistrationController::registerForm
+
+app_login:
+    path: /login
+    controller: App\Controller\LoginController::login
+
+app_logout:
+    path: /logout
+    controller: App\Controller\LoginController::logout
+    
+# Routes pour le profil utilisateur
+profile_index:
+    path: /profile
+    controller: App\Controller\ProfileController::index
+
+profile_edit:
+    path: /profile/edit
+    controller: App\Controller\ProfileController::edit
+
+profile_emprunts:
+    path: /profile/emprunts
+    controller: App\Controller\ProfileController::emprunts
+
+# Routes pour les livres
+livres_index:
+    path: /livres
+    controller: App\Controller\LivreController::index
+
+livre_show:
+    path: /livres/{id}
+    controller: App\Controller\LivreController::show
+    requirements:
+        id: \d+
+
+livre_new:
+    path: /livres/new
+    controller: App\Controller\LivreController::new
+
+livre_edit:
+    path: /livres/{id}/edit
+    controller: App\Controller\LivreController::edit
+    requirements:
+        id: \d+
+
+livre_delete:
+    path: /livres/{id}/delete
+    controller: App\Controller\LivreController::delete
+    requirements:
+        id: \d+
+
+livre_emprunter:
+    path: /livres/{id}/emprunter
+    controller: App\Controller\LivreController::emprunter
+    requirements:
+        id: \d+
+
+# Routes pour les catégories
+categories_index:
+    path: /categories
+    controller: App\Controller\CategorieController::index
+
+create_category:
+    path: /categories/new
+    controller: App\Controller\CategorieController::new
+
+show_category:
+    path: /categories/{id}
+    controller: App\Controller\CategorieController::show
+    requirements:
+        id: \d+
+
+update_category:
+    path: /categories/{id}/edit
+    controller: App\Controller\CategorieController::edit
+    requirements:
+        id: \d+
+
+delete_category:
+    path: /categories/{id}/delete
+    controller: App\Controller\CategorieController::delete
+    requirements:
+        id: \d+
+
+# Routes pour les commentaires
+commentaires_index:
+    path: /commentaires
+    controller: App\Controller\CommentaireController::index
+
+# Routes pour les réservations
+reservations_index:
+    path: /reservations
+    controller: App\Controller\ReservationController::getReservations
+
+# Routes pour les emprunts
+emprunts_index:
+    path: /emprunts
+    controller: App\Controller\EmpruntController::index
+
+emprunt_new:
+    path: /emprunts/new
+    controller: App\Controller\EmpruntController::new
+
+emprunt_show:
+    path: /emprunts/{id}
+    controller: App\Controller\EmpruntController::show
+    requirements:
+        id: \d+
+
+emprunt_retour:
+    path: /emprunts/{id}/retour
+    controller: App\Controller\EmpruntController::retour
+    requirements:
+        id: \d+
+
+emprunt_delete:
+    path: /emprunts/{id}/delete
+    controller: App\Controller\EmpruntController::delete
+    requirements:
+        id: \d+
+
+# Routes API
+api_get_categories:
+    path: /categories/api/list
+    controller: App\Controller\CategorieController::apiGetCategories
+
+api_create_category:
+    path: /categories/api/create
+    controller: App\Controller\CategorieController::apiCreateCategory
+
+# Pour les commentaires
+commentaire_index:
+    path: /commentaires
+    controller: App\Controller\CommentaireController::index
+    methods: [GET]
+
+commentaire_livre:
+    path: /commentaires/livre/{id}
+    controller: App\Controller\CommentaireController::commentairesByLivre
+    methods: [GET]
+    requirements:
+        id: \d+
+
+commentaire_delete:
+    path: /commentaires/delete/{id}
+    controller: App\Controller\CommentaireController::delete
+    methods: [POST]
+    requirements:
+        id: \d+
+
+    #password    
+
+app_reset_password:
+    path: /reset-password/{token}
+    controller: App\Controller\ResetPasswordController::reset
+    methods: [GET, POST]
+
+app_forgot_password_request:
+    path: /reset-password
+    controller: App\Controller\ResetPasswordController::request
+    methods: [GET, POST]
+controllers:
+    resource: '../src/Controller/'
+    type: attribute
+
+
+
+
+

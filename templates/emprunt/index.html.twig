@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des emprunts - Baticam{% endblock %}
+
+{% block body %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1>📚 Gestion des Emprunts</h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Utilisateur</th>
+                        <th>Livre</th>
+                        <th>Date d'emprunt</th>
+                        <th>À retourner le</th>
+                        <th>Statut</th>
+                     </tr>
+                </thead>
+                <tbody>
+                    {% for emprunt in emprunts %}
+                        <tr class="{{ emprunt.dateRetourReelle ? '' : (emprunt.dateRetourPrevue < date() ? 'table-danger' : '') }}">
+                            <td>{{ emprunt.id }}</td>
+                            <td>{{ emprunt.utilisateur.nom }}</td>
+                            <td>{{ emprunt.livre.titre }}</td>
+                            <td>{{ emprunt.dateEmprunt|date('d/m/Y') }}</td>
+                            <td>{{ emprunt.dateRetourPrevue|date('d/m/Y') }}</td>
+                            <td>
+                                {% if emprunt.dateRetourReelle %}
+                                    <span class="badge bg-info">Retourné le {{ emprunt.dateRetourReelle|date('d/m/Y') }}</span>
+                                {% elseif emprunt.dateRetourPrevue < date() %}
+                                    <span class="badge bg-danger">En retard</span>
+                                {% else %}
+                                    <span class="badge bg-success">En cours</span>
+                                {% endif %}
+                            </td>
+                            
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">Aucun emprunt trouvé</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

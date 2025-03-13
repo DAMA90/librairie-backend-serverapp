@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\State\UserStateProcessor:
+        arguments:
+            $passwordHasher: '@security.user_password_hasher'
+            $entityManager: '@doctrine.orm.entity_manager'
+        tags: ['api_platform.state_processor']
+        
+parameters:
+    images_directory: '%kernel.project_dir%/public/uploads/images'

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Modifier Commentaire {% endblock %}
+
+{% block body %}
+    <h1>Modifier Commentaire</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary mt-2">Modifier</button>
+    {{ form_end(form) }}
+{% endblock %}
