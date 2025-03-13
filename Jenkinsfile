@@ -5,7 +5,6 @@ pipeline {
         GIT_REPO = "https://github.com/DAMA90/librairie-backend-serverapp.git"
         GIT_BRANCH = "main"
         DEPLOY_DIR = "web010"
-        DEPLOY_PATH = "/var/www/html/${DEPLOY_DIR}"
     }
 
     stages {
@@ -13,14 +12,13 @@ pipeline {
             steps {
                 sh "rm -rf ${DEPLOY_DIR}" // Nettoyage du précédent build
                 sh "git clone -b ${GIT_BRANCH} ${GIT_REPO} ${DEPLOY_DIR}"
-                sh "echo $(date) > ${DEPLOY_DIR}/force_build" // Forcer la reconstruction
             }
         }
 
         stage('Installation des dépendances') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'composer install --no-dev --optimize-autoloader'
+                    sh 'composer install --optimize-autoloader'
                 }
             }
         }
@@ -30,8 +28,8 @@ pipeline {
                 script {
                     def envLocal = """
                     APP_ENV=prod
-                    APP_DEBUG=0
-                    DATABASE_URL=mysql://root:@127.0.0.1:3306/${DEPLOY_DIR}?serverVersion=8.3.0&charset=utf8mb4
+                    APP_DEBUG=1
+                    DATABASE_URL=mysql://root:routitop@127.0.0.1:3306/${DEPLOY_DIR}?serverVersion=8.3.0&charset=utf8mb4
                     """.stripIndent()
 
                     writeFile file: "${DEPLOY_DIR}/.env.local", text: envLocal
@@ -42,8 +40,8 @@ pipeline {
         stage('Migration de la base de données') {
             steps {
                 dir("${DEPLOY_DIR}") {
-                    sh 'php bin/console doctrine:database:create --if-not-exists --env=prod || true'
-                    sh 'php bin/console doctrine:migrations:migrate --no-interaction --env=prod || true'
+                    sh 'php bin/console doctrine:database:create --if-not-exists --env=prod'
+                    sh 'php bin/console doctrine:migrations:migrate --no-interaction --env=prod'
                 }
             }
         }
@@ -51,6 +49,7 @@ pipeline {
         stage('Nettoyage du cache') {
             steps {
                 dir("${DEPLOY_DIR}") {
+                    sh 'php bin/console cache:clear --env=prod'
                     sh 'php bin/console cache:warmup'
                 }
             }
@@ -58,21 +57,20 @@ pipeline {
 
         stage('Déploiement') {
             steps {
-                sh "sudo rm -rf ${DEPLOY_PATH}" // Supprime le dossier de destination
-                sh "sudo mkdir -p ${DEPLOY_PATH}" // Crée le dossier s'il n'existe pas
-                sh "sudo cp -rT ${DEPLOY_DIR} ${DEPLOY_PATH}"
-                sh "sudo chmod -R 775 ${DEPLOY_PATH}/var"
-                sh "sudo chown -R www-data:www-data ${DEPLOY_PATH}" // Assurer que le serveur web a les droits
+                sh "rm -rf /var/www/html/${DEPLOY_DIR}" // Supprime le dossier de destination
+                sh "mkdir /var/www/html/${DEPLOY_DIR}" // Recréé le dossier de destination
+                sh "cp -rT ${DEPLOY_DIR} /var/www/html/${DEPLOY_DIR}"
+                sh "chmod -R 775 /var/www/html/${DEPLOY_DIR}/var"
             }
         }
     }
 
     post {
         success {
-            echo '🚀 Déploiement réussi !'
+            echo 'Déploiement réussi !'
         }
         failure {
-            echo '❌ Erreur lors du déploiement.'
+            echo 'Erreur lors du déploiement.'
         }
     }
 }
