@@ -27,7 +27,7 @@ use ApiPlatform\Metadata\GetCollection;
         'jsonld_omit_type' => true
     ]
 )]
-class utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
