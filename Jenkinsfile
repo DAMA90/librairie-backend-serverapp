@@ -29,7 +29,7 @@
                     def envLocal = """
                     APP_ENV=prod
                     APP_DEBUG=1
-                 DATABASE_URL=mysql://root:routitop@127.0.0.1:3306/librairie?serverVersion=8.3.0&charset=utf8mb4
+                 DATABASE_URL=mysql://root@127.0.0.1:3306/librairie?serverVersion=8.3.0&charset=utf8mb4
 
                     """.stripIndent()
 
