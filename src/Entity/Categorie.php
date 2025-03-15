@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
+use App\Repository\categorieRepository;
 use Doctrine\ORM\Mapping as ORM;
 use APiPlatform\MetaData\ApiResource;
 
-#[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[ORM\Entity(repositoryClass: categorieRepository::class)]
 #[ApiResource]
-class Categorie
+class categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

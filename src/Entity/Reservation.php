@@ -2,14 +2,14 @@
 
 namespace App\Entity;
 
-use App\Repository\ReservationRepository;
+use App\Repository\reservationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 
-#[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ORM\Entity(repositoryClass: reservationRepository::class)]
 #[ApiResource]
-class Reservation
+class reservation
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CommentaireRepository;
+use App\Repository\commentaireRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-#[ORM\Entity(repositoryClass: CommentaireRepository::class)]
+#[ORM\Entity(repositoryClass: commentaireRepository::class)]
 #[ApiResource]
-class Commentaire
+class commentaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -68,23 +68,23 @@ class Commentaire
         return $this;
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public function getUtilisateur(): ?utilisateur
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(?Utilisateur $utilisateur): self
+    public function setUtilisateur(?utilisateur $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
         return $this;
     }
 
-    public function getLivre(): ?Livre
+    public function getLivre(): ?livre
     {
         return $this->livre;
     }
 
-    public function setLivre(?Livre $livre): self
+    public function setLivre(?livre $livre): self
     {
         $this->livre = $livre;
         return $this;

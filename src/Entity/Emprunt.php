@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\EmpruntRepository;
+use App\Repository\empruntRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 
-#[ORM\Entity(repositoryClass: EmpruntRepository::class)]
-class Emprunt
+#[ORM\Entity(repositoryClass: empruntRepository::class)]
+class emprunt
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,11 +16,11 @@ class Emprunt
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: "fk_id_livre", nullable: false)]
-    private ?Livre $livre = null;
+    private ?livre $livre = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: "fk_id_utilisateur", nullable: false)]
-    private ?Utilisateur $utilisateur = null;
+    private ?utilisateur $utilisateur = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateEmprunt = null;
@@ -36,7 +36,7 @@ class Emprunt
         return $this->id;
     }
 
-    public function getLivre(): ?Livre
+    public function getLivre(): ?livre
     {
         return $this->livre;
     }
@@ -47,12 +47,12 @@ class Emprunt
         return $this;
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public function getUtilisateur(): ?utilisateur
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(?Utilisateur $utilisateur): static
+    public function setUtilisateur(?utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
         return $this;

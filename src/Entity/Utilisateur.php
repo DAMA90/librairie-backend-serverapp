@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UtilisateurRepository;
+use App\Repository\utilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +13,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 
-#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
+#[ORM\Entity(repositoryClass: utilisateurRepository::class)]
 #[ApiResource(
     operations: [
         new Post(name: 'register'),
@@ -27,7 +27,7 @@ use ApiPlatform\Metadata\GetCollection;
         'jsonld_omit_type' => true
     ]
 )]
-class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
+class utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -52,7 +52,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Commentaire>
      */
-    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'utilisateur')]
+    #[ORM\OneToMany(targetEntity: commentaire::class, mappedBy: 'utilisateur')]
     private Collection $commentaires;
 
     public function __construct()
@@ -114,14 +114,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Commentaire>
+     * @return Collection<int, commentaire>
      */
     public function getCommentaires(): Collection
     {
         return $this->commentaires;
     }
 
-    public function addCommentaire(Commentaire $commentaire): static
+    public function addCommentaire(commentaire $commentaire): static
     {
         if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires->add($commentaire);
@@ -131,7 +131,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeCommentaire(Commentaire $commentaire): static
+    public function removeCommentaire(commentaire $commentaire): static
     {
         if ($this->commentaires->removeElement($commentaire)) {
             if ($commentaire->getUtilisateur() === $this) {
