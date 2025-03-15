@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\utilisateurRepository;
+use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +13,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 
-#[ORM\Entity(repositoryClass: utilisateurRepository::class)]
+#[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ApiResource(
     operations: [
         new Post(name: 'register'),
