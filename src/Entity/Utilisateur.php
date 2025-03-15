@@ -52,7 +52,7 @@ class utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Commentaire>
      */
-    #[ORM\OneToMany(targetEntity: commentaire::class, mappedBy: 'utilisateur')]
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'utilisateur')]
     private Collection $commentaires;
 
     public function __construct()
@@ -114,14 +114,14 @@ class utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, commentaire>
+     * @return Collection<int, Commentaire>
      */
     public function getCommentaires(): Collection
     {
         return $this->commentaires;
     }
 
-    public function addCommentaire(commentaire $commentaire): static
+    public function addCommentaire(Commentaire $commentaire): static
     {
         if (!$this->commentaires->contains($commentaire)) {
             $this->commentaires->add($commentaire);
@@ -131,7 +131,7 @@ class utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeCommentaire(commentaire $commentaire): static
+    public function removeCommentaire(Commentaire $commentaire): static
     {
         if ($this->commentaires->removeElement($commentaire)) {
             if ($commentaire->getUtilisateur() === $this) {

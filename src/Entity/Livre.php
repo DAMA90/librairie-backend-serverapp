@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\File\File;
 #[ORM\Entity]
 #[ORM\Table(name: 'livre')]
 #[ApiResource]
-class livre
+class Livre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,9 +26,9 @@ class livre
     #[ORM\Column(type: 'date')]
     private \DateTimeInterface $date;
 
-    #[ORM\ManyToOne(targetEntity: categorie::class, inversedBy: 'livres')]
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'livres')]
     #[ORM\JoinColumn(name: 'fk_id_categorie', referencedColumnName: 'id', nullable: false)]
-    private categorie $categorie;
+    private Categorie $categorie;
     
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $image = null;
@@ -79,12 +79,12 @@ class livre
         return $this;
     }
 
-    public function getCategorie(): ?categorie
+    public function getCategorie(): ?Categorie
     {
         return $this->categorie;
     }
 
-    public function setCategorie(?categorie $categorie): self
+    public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
 
